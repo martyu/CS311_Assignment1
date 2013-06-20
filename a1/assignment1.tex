@@ -1,0 +1,80 @@
+\documentclass[letterpaper,10pt,onecolumn,titlepage]{article}
+
+\usepackage{graphicx}                                        
+\usepackage{amssymb}                                         
+\usepackage{amsmath}                                         
+\usepackage{amsthm}                                          
+
+\usepackage{alltt}                                           
+\usepackage{float}
+\usepackage{color}
+\usepackage{url}
+
+\usepackage{balance}
+\usepackage[TABBOTCAP, tight]{subfigure}
+\usepackage{enumitem}
+
+
+\usepackage{geometry}
+\geometry{textheight=8.5in, textwidth=6in}
+
+%random comment
+
+\newcommand{\cred}[1]{{\color{red}#1}}
+\newcommand{\cblue}[1]{{\color{blue}#1}}
+
+\usepackage{hyperref}
+\usepackage{geometry}
+
+\def\name{Marty Ulrich}
+
+%% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {cs311 ``operating systems'' files filesystem I/O},
+  pdftitle = {CS 311 Project 1: UNIX File I/O},
+  pdfsubject = {CS 311 Project 1},
+  pdfpagemode = UseNone
+}
+
+\begin{document}
+
+\title{Assignment 1}
+\author{Marty Ulrich\\
+Oregon State University - CS 311}
+\renewcommand{\today}{January 24, 2012}
+\maketitle
+
+\section {Overview}
+This program takes in one file and copies it to a new location.  It was designed to help up understand new tools that we hadn't used before, and to the relation between time and block size loaded into the buffer when copying files.  I varied the block sizes in my testing from 1 to 8192, using every power of two in between.  The results were as can be expected.  The smaller the buffer size, the longer the file took to copy.
+
+	\subsection {Functions}
+	The program only contains one source file, "main.cpp".  The source file is writted in C++.  The main function takes in two parameters, argc and argv[] - which are the standard inputs for the main function of a C++ program - and parses two constant character arrays from argv[].  The character arrays hold path names to the input file and where it is to be copied to.  It checks to make sure the path names are valid, and opens the files.  If there is a file already at the output path name, it asks for user input on how to handle.  It then passes the file descriptors of the files, which are held in the integer variables "input\_file\_desc" and "output\_file\_desc", to the function "read\_write\_file" for read and write handling.
+	\\
+	The function "read\_write\_file" takes the two integer file descriptors and reads in the data from the input file, in block sizes defined by the global constant "BUFFER\_SIZE", and writes it to the file described by "output\_file\_desc".  Once the file is copied, the function ends, and the main function closes the files and ends.
+
+\section {Work Log}
+2012 January 14, 10:54 - First commit; project started.
+\\
+2012 January 14, 15:23 - Main function finished, starting on read/write function.
+\\
+2012 January 16, 13:35 - Adding different block sizes to test time they take.
+\\
+2012 January 17, 10:54 - Added loop to read/write function with 1-8192 bytes for block sizes, in powers of two, and adding time tracker.
+\\
+2012 January 14, 13:23 - Loop isn't working, doesn't output anything until end of program, then says the first file copy took 93 seconds (total program runtime), and the rest took none.
+\\
+2012 January 14, 15:45 - Couldn't figure out why loop wasn't working, taking out and inputting block sizes as third (temporary) parameter.
+\\
+2012 January 14, 10:54 - Adding comments, formatting correctly (hopefully).
+\\
+
+\begin{figure}[b]
+	\centering
+	  \caption{A graph of time vs block size}
+\end{figure}
+
+
+\end{document}
